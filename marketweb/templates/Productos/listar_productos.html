@@ -1,0 +1,121 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 120px !important; padding-bottom: 20px !important;">
+    
+    <div class="container p-4 w-100 shadow-lg glass-card" style="max-width: 1300px; border-radius: 20px;">
+        
+        <!-- Cabecera y Buscador -->
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
+            <h3 class="fw-bold text-dark m-0">🛍️Inventario</h3>
+            
+            <div class="d-flex gap-2">
+                <!-- Barra de Búsqueda -->
+                <form method="GET" class="d-flex">
+                    <input type="text" name="buscar" class="form-control form-control-sm rounded-pill px-3" placeholder="Buscar producto..." value="{{ buscar }}">
+                    <button type="submit" class="btn btn-sm btn-outline-dark ms-2 rounded-pill px-3">🔍</button>
+                </form>
+                
+                <a href="{% url 'registrar_productos' %}" class="btn btn-custom-success px-4 btn-sm fw-bold shadow-sm rounded-pill">
+                    ➕ Nuevo Producto
+                </a>
+            </div>
+        </div>
+
+        <!-- Cuadrícula compacta -->
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4" style="align-items: flex-start !important;">
+            {% if productos %}
+                {% for p in productos %}
+                    <div class="col" style="align-self: start !important;">
+                        <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white" style="height: auto !important;">
+                            
+                            <!-- 1. Imagen a todo el ancho superior con esquinas redondeadas -->
+                            <div style="width: 100%; height: 160px; overflow: hidden; border-top-left-radius: 1rem; border-top-right-radius: 1rem; background-color: #ffffff;">
+                                {% if p.imagen %}
+                                    <img src="{% static 'img/' %}{{ p.imagen }}" alt="{{ p.nombre }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                {% else %}
+                                    <img src="{% static 'img/default.png' %}" alt="Sin imagen" style="width: 100%; height: 100%; object-fit: contain;">
+                                {% endif %}
+                            </div>
+
+                            <!-- Cuerpo de la Tarjeta con el orden exacto solicitado -->
+                            <div class="card-body p-3">
+
+                                <!-- 2. Precio y Nombre en la misma línea -->
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fs-5 fw-bold text-dark">$ {{ p.precio }}</span>
+                                    <span class="fw-bold text-dark text-truncate ms-2" style="font-size: 0.9rem; max-width: 55%;">{{ p.nombre|upper }}</span>
+                                </div>
+
+                                <!-- 3. Botones de Acción (Editar y Eliminar) -->
+                                <div class="d-flex justify-content-between gap-2 pt-2 pb-2 border-top">
+                                    <a href="{% url 'editar_producto' p.id %}" class="btn btn-outline-primary btn-sm rounded-pill w-50 fw-bold" style="font-size: 0.8rem;">Editar</a>
+                                    <a href="#" class="btn btn-outline-danger btn-sm rounded-pill w-50 fw-bold" style="font-size: 0.8rem;" onclick="return confirm('¿Estás seguro de eliminar este producto?');">Eliminar</a>
+                                </div>
+
+                                <!-- 4. Categoría (izquierda) y Stock (derecha) en la parte inferior -->
+                                <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                    <span class="badge bg-secondary rounded-pill px-2 py-1" style="font-size: 0.75rem;">{{ p.idCategorias.nombre|upper }}</span>
+                                    <span class="text-muted small">Stock: <strong class="{% if p.stock <= p.minstock %}text-danger{% else %}text-success{% endif %}">{{ p.stock }}</strong></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">No hay productos registrados en el sistema todavía.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Paginación inferior -->
+        <nav aria-label="Navegación de páginas" class="mt-5 mb-2">
+            <ul class="pagination justify-content-center">
+                {% if productos.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link rounded-start-pill" href="?page=1{% if buscar %}&buscar={{ buscar }}{% endif %}">&laquo; Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ productos.previous_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-start-pill">&laquo; Primera</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link bg-dark border-dark">
+                        Página {{ productos.number }} de {{ productos.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if productos.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ productos.next_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Siguiente</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-end-pill" href="?page={{ productos.paginator.num_pages }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Última &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Siguiente</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-end-pill">Última &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}

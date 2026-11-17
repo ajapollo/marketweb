@@ -1,0 +1,108 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 100px !important;">
+    
+    <div class="card glass-card p-5 w-100 shadow-lg" style="max-width: 800px;">
+        <div class="pb-2 mb-3 border-bottom border-light">
+            <h3 class="fw-bold m-0" style="color: #518fcd;">Registrar Proveedor</h3>
+        </div>
+
+        <!-- Alerta de éxito o error -->
+        {% if mensaje %}
+            <div class="alert {% if 'éxito' in mensaje %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show py-2 mb-3" role="alert">
+                {{ mensaje }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            
+            <!-- Fila 1: Tipo de Identificación / NIT y Número de Identificación + Línea divisoria -->
+            <div class="row g-3 pb-3 mb-3 border-bottom border-light border-opacity-50">
+                <div class="col-md-6">
+                    <label for="cboTip" class="form-label text-dark fw-bold small mb-1">Tipo de Identificación / Documento</label>
+                    <select class="form-select form-select-lg fs-6 py-2" id="cboTip" name="cboTip" required>
+                        <option value="" selected disabled>Seleccione...</option>
+                        <option value="NIT">NIT</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="txtNum" class="form-label text-dark fw-bold small mb-1">Número de Identificación</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text py-2">💳</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNum" name="txtNum" 
+                            maxlength="10" placeholder="Ej: 900123456" 
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 2: Nombre / Empresa y Teléfono / Celular + Línea divisoria -->
+            <div class="row g-3 pb-3 mb-3 border-bottom border-light border-opacity-50">
+                <div class="col-md-6">
+                    <label for="txtNom" class="form-label text-dark fw-bold small mb-1">Nombre / Empresa</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text py-2">🏢</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNom" name="txtNom" 
+                            maxlength="100" placeholder="Nombre del proveedor" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="txtCel" class="form-label text-dark fw-bold small mb-1">Teléfono / Celular</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text py-2">📞</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtCel" name="telefono" 
+                            minlength="7" maxlength="10" placeholder="Ej: 3001234567" 
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 3: Dirección -->
+            <div class="row g-3 pb-3 mb-3 border-bottom border-light border-opacity-50">
+                <div class="col-12">
+                    <label for="txtDir" class="form-label text-dark fw-bold small mb-1">Dirección</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text py-2">📍</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtDir" name="txtDir" 
+                            maxlength="150" placeholder="Dirección física" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 4: Correo Electrónico -->
+            <div class="row g-3 mb-3">
+                <div class="col-12">
+                    <label for="txtEma" class="form-label text-dark fw-bold small mb-1">Correo Electrónico</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text py-2">✉️</span>
+                        <input type="email" class="form-control form-control-lg fs-6 py-2" id="txtEma" name="txtEma" 
+                            maxlength="45" placeholder="correo@empresa.com" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    <a href="{% url 'listar_proveedores' %}" class="btn btn-secondary px-4 py-2 fs-6 fw-bold shadow-sm rounded-pill">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-custom-success px-5 py-2 fs-6 fw-bold shadow-sm rounded-pill" id="btnGuardar">
+                        📦 Guardar Proveedor 📦
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}

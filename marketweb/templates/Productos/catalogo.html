@@ -1,0 +1,183 @@
+{% load static %}
+{% include 'header_publico.html' %}
+{% load humanize %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 120px !important; padding-bottom: 20px !important;">
+    
+    <div class="container p-4 w-100 shadow-lg glass-card" style="max-width: 1300px; border-radius: 20px;">
+        
+
+
+
+
+        
+<!-- Cabecera y Buscador -->
+<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
+    <h3 class="fw-bold text-dark m-0">🛍️ Catálogo de Productos</h3>
+
+    <div class="d-flex gap-2 align-items-center">
+        <form method="GET" id="formFiltro">
+            <select name="categoria" class="form-select form-select-sm rounded-pill px-3" onchange="document.getElementById('formFiltro').submit()">
+                <option value="">Todas las categorías</option>
+                {% for c in categorias %}
+                    <option value="{{ c.id }}" {% if categoria_seleccionada == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <a href="{% url 'ver_carrito' %}" class="btn btn-sm btn-dark rounded-pill px-3 d-flex align-items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            Carrito
+        </a>
+    </div>
+</div>
+
+
+
+
+
+
+        <!-- Cuadrícula de Tarjetas -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" style="align-items: stretch !important;">
+            {% if productos %}
+                {% for p in productos %}
+                    <div class="col">
+                        <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white h-100 d-flex flex-column p-3">
+                            
+                            <!-- Imagen centrada arriba -->
+                            <div class="text-center mb-3" style="width: 100%; height: 260px; overflow: hidden; background-color: #fff;">
+                                {% if p.imagen %}
+                                    <img src="{% static 'img/' %}{{ p.imagen }}" alt="{{ p.nombre }}" style="width: 100%; height: 100%; object-fit: contain;">
+                                {% else %}
+                                    <img src="{% static 'img/default.png' %}" alt="Sin imagen" style="width: 100%; height: 100%; object-fit: contain;">
+                                {% endif %}
+                            </div>
+
+                            <!-- Cuerpo de la Tarjeta -->
+                            <div class="card-body d-flex flex-column p-0">
+
+                                <!-- Nombre en su propia línea, ancho completo -->
+                                <p class="text-dark mb-1" style="font-size: 1rem;">{{ p.nombre }}</p>
+
+                                <!-- Precio grande debajo del nombre -->
+                                <span class="fs-4 fw-bold text-dark mb-2">$ {{ p.precio|floatformat:0|intcomma }}</span>
+
+                                <p class="text-muted small mb-1">Categoría: {{ p.idCategorias.nombre }}</p>
+                                <p class="text-muted small mb-3">código {{ p.codigo }}</p>
+
+                                <div class="mt-auto pt-2">
+                                    <button type="button" class="btn btn-dark w-100 rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2 btn-agregar-carrito" data-producto-id="{{ p.pk }}" data-producto-nombre="{{ p.nombre }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                        </svg>
+                                        Agregar al Carrito
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">No hay productos disponibles en el catálogo.</p>
+                </div>
+            {% endif %}
+        </div>
+
+
+
+
+
+
+        <!-- Paginación -->
+        <nav aria-label="Navegación de páginas" class="mt-5 mb-2">
+            <ul class="pagination justify-content-center">
+                {% if productos.has_previous %}
+                    <li class="page-item">
+                        
+                        <a class="page-link rounded-start-pill" href="?page=1{% if categoria_seleccionada %}&categoria={{ categoria_seleccionada }}{% endif %}">&laquo; Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ productos.previous_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-start-pill">&laquo; Primera</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link bg-dark border-dark">
+                        Página {{ productos.number }} de {{ productos.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if productos.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ productos.next_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Siguiente</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-end-pill" href="?page={{ productos.paginator.num_pages }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Última &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Siguiente</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-end-pill">Última &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+{% include 'inc/footer.html' %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-agregar-carrito').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const productoId = this.dataset.productoId;
+            const nombreProducto = this.dataset.productoNombre;
+            agregarAlCarrito(productoId, nombreProducto);
+        });
+    });
+});
+
+function agregarAlCarrito(productoId, nombreProducto) {
+    fetch(`/carrito/agregar/${productoId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        Swal.fire({
+            title: '¡Producto agregado!',
+            text: nombreProducto + ' se añadió al carrito.',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Ver carrito',
+            cancelButtonText: 'Seguir viendo',
+            confirmButtonColor: '#000000',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'ver_carrito' %}";
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error al agregar al carrito:', error);
+    });
+}
+</script>

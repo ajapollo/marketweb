@@ -1,0 +1,58 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 100px !important; min-height: 100vh;">
+    
+    <div class="card glass-card p-5 w-100 shadow-lg" style="max-width: 700px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-light">
+            <h3 class="fw-bold text-dark m-0">📂 Registrar Nueva Categoría</h3>
+        </div>
+
+        {% if mensaje %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ mensaje }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        
+        <form class="py-2" method="POST" autocomplete="off">
+            {% csrf_token %}
+            
+            <!-- Nombre de la Categoría -->
+            <div class="mb-4">
+                <label for="txtNombre" class="form-label text-dark fw-bold small">Nombre de la Categoría</label>
+                <div class="input-group input-group-custom">
+                    <span class="input-group-text">🏷️</span>
+                    <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNombre" name="nombre" 
+                        maxlength="100" placeholder="Ej: Granos y Abarrotes" required>
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-4">
+                <label for="txtDescripcion" class="form-label text-dark fw-bold small">Descripción</label>
+                <div class="input-group input-group-custom">
+                    <span class="input-group-text">📝</span>
+                    <textarea class="form-control form-control-lg fs-6 py-2" id="txtDescripcion" name="descripcion" 
+                        rows="3" maxlength="245" placeholder="Ej: Productos de la canasta familiar no perecederos..." required></textarea>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    <a href="{% url 'listar_categorias' %}" class="btn btn-secondary px-4 py-2 fs-6 fw-bold shadow-sm rounded-pill">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-custom-success px-5 py-2 fs-6 fw-bold shadow-sm rounded-pill">
+                        📂 Guardar Categoría
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}

@@ -1,0 +1,134 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 120px !important; min-height: 100vh;">
+    
+    <div class="card glass-card p-4 w-100 shadow-lg" style="max-width: 1000px;">
+        
+        <!-- Cabecera y Buscador -->
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-light flex-wrap gap-3">
+            <h3 class="fw-bold text-dark m-0">📂 Listado de Categorías</h3>
+            
+            <div class="d-flex gap-2">
+                <!-- Barra de Búsqueda -->
+                <form method="GET" class="d-flex">
+                    <input type="text" name="buscar" class="form-control form-control-sm rounded-pill px-3" placeholder="Buscar categoría..." value="{{ buscar }}">
+                    <button type="submit" class="btn btn-sm btn-outline-dark ms-2 rounded-pill px-3">🔍</button>
+                </form>
+                
+                <a href="{% url 'registrar_categoria' %}" class="btn btn-custom-success px-4 btn-sm fw-bold shadow-sm rounded-pill">
+                    ➕ Nueva Categoría
+                </a>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        
+        <!-- Tabla de Categorías -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-dark">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if categorias %}
+                        {% for cat in categorias %}
+                            <tr>
+                                <td class="fw-bold">#{{ cat.id }}</td>
+                                <td class="fw-bold text-primary">{{ cat.nombre }}</td>
+                                <td>{{ cat.descripcion }}</td>
+                                <td>
+                                    {% if cat.estado %}
+                                        <span class="badge bg-success px-3 py-2 rounded-pill">Activo</span>
+                                    {% else %}
+                                        <span class="badge bg-danger px-3 py-2 rounded-pill">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="#" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm rounded-pill">Editar</a>
+                                        <a href="#" class="btn btn-danger btn-sm px-3 fw-bold shadow-sm rounded-pill">Eliminar</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                No se encontraron categorías registradas.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+
+        <!-- Paginación de Categorías -->
+        <nav aria-label="Navegación de páginas" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <!-- Botón Anterior -->
+                {% if categorias.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link rounded-start-pill" href="?page=1{% if buscar %}&buscar={{ buscar }}{% endif %}">&laquo; Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ categorias.previous_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-start-pill">&laquo; Primera</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                {% endif %}
+
+                <!-- Indicador de página actual -->
+                <li class="page-item active">
+                    <span class="page-link bg-dark border-dark">
+                        Página {{ categorias.number }} de {{ categorias.paginator.num_pages }}
+                    </span>
+                </li>
+
+                <!-- Botón Siguiente -->
+                {% if categorias.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ categorias.next_page_number }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Siguiente</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-end-pill" href="?page={{ categorias.paginator.num_pages }}{% if buscar %}&buscar={{ buscar }}{% endif %}">Última &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Siguiente</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link rounded-end-pill">Última &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}

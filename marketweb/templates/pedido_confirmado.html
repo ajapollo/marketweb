@@ -1,0 +1,12 @@
+{% load static %}
+{% include 'header_publico.html' %}
+
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 120px !important; padding-bottom: 20px !important;">
+    <div class="container p-4 w-100 shadow-lg glass-card text-center" style="max-width: 700px; border-radius: 20px;">
+        <h3 class="fw-bold text-dark mb-3">✅ ¡Pedido confirmado!</h3>
+        <p class="text-muted">Gracias por tu compra. Pronto nos pondremos en contacto para coordinar la entrega.</p>
+        <a href="{% url 'catalogo' %}" class="btn btn-dark rounded-pill px-4 mt-3">Volver al catálogo</a>
+    </div>
+</div>
+
+{% include 'inc/footer.html' %}

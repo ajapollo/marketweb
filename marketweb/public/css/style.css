@@ -1,0 +1,222 @@
+/* Fondo de supermercado con efecto parallax */
+
+/* Sección Hero a pantalla completa */
+.hero-bg {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    height: 100% !important;
+    background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1920&auto=format&fit=crop') no-repeat center top !important;
+    background-size: cover !important;
+    background-attachment: scroll !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 120px !important;
+    padding-bottom: 80px !important;
+    z-index: 1 !important;
+}
+
+/* Capa translúcida */
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+/* Tarjeta principal centrada y con tamaño controlado */
+.glass-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+    max-width: 1050px;
+}
+
+/* Estilos de los inputs con sus iconos */
+.input-group-custom .input-group-text {
+    background-color: #f2f7f5;
+    border: 1px solid #d5e3de;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.input-group-custom .form-control {
+    background-color: #f2f7f5;
+    border: 1px solid #d5e3de;
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.input-group-custom .form-control:focus {
+    background-color: #fff;
+    border-color: #2e7d6b;
+    box-shadow: none;
+}
+
+.form-select {
+    background-color: #f2f7f5;
+    border: 1px solid #d5e3de;
+    border-radius: 10px;
+}
+
+.form-select:focus {
+    background-color: #fff;
+    border-color: #2e7d6b;
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 107, 0.15);
+}
+
+/* Botón personalizado */
+.btn-custom-success {
+    background-color: #2e7d6b;
+    border-color: #2e7d6b;
+    color: white;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom-success:hover {
+    background-color: #246355;
+    border-color: #246355;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Barra de navegación flotante y transparente sobre la imagen */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: calc(100% - 40px) !important;
+    margin: 15px 20px !important;
+    z-index: 1030 !important;
+    background-color: #ffffff !important;
+    border: 3px solid #007a33 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 20px rgba(0, 122, 51, 0.15) !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    color: #2b3035 !important;
+}
+
+.navbar-brand .brand-bd {
+    color: #2e7d6b !important;
+    font-weight: 800;
+}
+
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(213, 227, 222, 0.8);
+    z-index: 1050 !important;
+}
+
+.dropdown-menu li {
+    margin-bottom: 4px;
+}
+
+.dropdown-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #2e7d6b !important;
+    color: white !important;
+    transform: translateX(4px);
+}
+
+.navbar-nav .nav-link {
+    color: #2b3035 !important;
+    font-weight: 600;
+    padding: 8px 16px !important;
+    border-radius: 8px;
+    transition: all 0.25s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active,
+.navbar-nav .show > .nav-link {
+    background-color: #007a33 !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(0, 122, 51, 0.25);
+}
+
+html, body {
+    width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed !important;
+    background-size: cover !important;
+    background-color: #1a1a1a !important;
+}
+
+/* Efecto hover suave en la tabla sobre fondo glass */
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.toast {
+    background-color: rgba(30, 30, 30, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+.glass-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* sin min-height, o con un valor menor */
+}
+
+.glass-card {
+    min-height: 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+/* 2. Fija un ancho mínimo en la columna de acciones para que los botones no se muevan */
+td:last-child, th:last-child {
+    white-space: nowrap; 
+    min-width: 160px;
+}

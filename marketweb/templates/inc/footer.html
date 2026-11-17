@@ -1,0 +1,36 @@
+<!-- Script de Búsqueda en vivo por AJAX para Clientes (Optimizado) -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // Usamos delegación en el documento para atrapar el input sin importar si se recarga por partes
+    document.addEventListener("input", function(e) {
+        if (e.target && e.target.id === "buscador") {
+            let query = e.target.value;
+            
+            // Hacemos la petición AJAX enviando el parámetro de búsqueda
+            fetch(`?buscar=${encodeURIComponent(query)}`, {
+                headers: {
+                    "x-requested-with": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Parseamos el HTML devuelto por Django
+                let parser = new DOMParser();
+                let doc = parser.parseFromString(data.html, 'text/html');
+                let nuevoContenido = doc.getElementById('contenedor-tabla');
+                
+                if (nuevoContenido) {
+                    // Reemplazamos el contenido de la tabla y paginación en tiempo real
+                    document.getElementById('contenedor-tabla').innerHTML = nuevoContenido.innerHTML;
+                    
+                    // Opcional: Actualiza la URL del navegador sin recargar la página para no perder el estado
+                    window.history.replaceState({}, '', `?buscar=${encodeURIComponent(query)}`);
+                }
+            })
+            .catch(error => console.error("Error en la búsqueda AJAX:", error));
+        }
+    });
+
+});
+</script>

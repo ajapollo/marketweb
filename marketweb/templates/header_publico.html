@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BdMarket - Catálogo</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+    <!-- Logo principal -->
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-1" href="{% url 'catalogo' %}">
+        <span class="brand-bd">Bd</span>Market 🏪
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
+            <!-- Único enlace visible para el usuario público -->
+            <li class="nav-item">
+                <a class="nav-link active px-3 py-2 rounded-pill fw-semibold text-dark hover-pill" aria-current="page" href="{% url 'catalogo' %}">Catálogo</a>
+            </li>
+
+        </ul>
+    </div>
+
+</nav>

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BdMarket</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+    <!-- Logo principal -->
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-1" href="{% url 'home' %}">
+        <span class="brand-bd">Bd</span>Market 🏪
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+            
+            <!-- Botón Inicio -->
+            <li class="nav-item">
+                <a class="nav-link active px-3 py-2 rounded-pill fw-semibold text-dark hover-pill" aria-current="page" href="{% url 'home' %}">Inicio</a>
+            </li>
+
+            <!-- Menú Desplegable Clientes -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle px-3 py-2 rounded-pill fw-semibold text-dark hover-pill" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Clientes
+                </a>
+                <ul class="dropdown-menu shadow-sm">
+                    <li><a class="dropdown-item" href="{% url 'registrar_cliente' %}">👤 Registrar Cliente</a></li>
+                    <li><a class="dropdown-item" href="{% url 'listarclientes' %}">📋 Lista de Clientes</a></li>
+                    <li><hr class="dropdown-divider my-2"></li>
+                    <li><a class="dropdown-item text-danger" href="#">⚙️ Configuración</a></li>
+                </ul>
+            </li>
+
+            <!-- Menú Desplegable Proveedores -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle px-3 py-2 rounded-pill fw-semibold text-dark hover-pill" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Proveedores
+                </a>
+                <ul class="dropdown-menu shadow-sm">
+                    <li><a class="dropdown-item" href="{% url 'registrar_proveedor' %}">🏢 Registrar Proveedor</a></li>
+                    <li><a class="dropdown-item" href="{% url 'listar_proveedores' %}">📋 Lista de Proveedores</a></li>
+                    <li><hr class="dropdown-divider my-2"></li>
+                    <li><a class="dropdown-item text-danger" href="#">⚙️ Configuración</a></li>
+                </ul>
+            </li>
+
+                
+            <!-- Menú Desplegable Productos (Incluye Categorías) -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle px-3 py-2 rounded-pill fw-semibold text-dark hover-pill" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Productos Admin
+                </a>
+                <ul class="dropdown-menu shadow-sm">
+                    <li><a class="dropdown-item" href="{% url 'registrar_productos' %}">🛍️ Registrar Producto</a></li>
+                </li>
+                    <li><a class="dropdown-item" href="{% url 'listar_productos' %}">📦 Lista de Productos</a></li>
+                    <li><hr class="dropdown-divider my-2"></li>
+                    <li><a class="dropdown-item" href="{% url 'listar_categorias' %}">📂 Categorías de Productos</a></li>
+
+                </ul>
+            </li>
+
+
+
+        </ul>
+
+        <!-- Buscador estilizado -->
+        <form class="d-flex" role="search">
+            <input class="form-control me-0 shadow-none" type="search" placeholder="Buscar..." aria-label="Search"/>
+            <button class="btn btn-search-custom px-3" type="submit">Buscar</button>
+        </form>
+    </div>
+
+
+
+
+
+
+</nav>

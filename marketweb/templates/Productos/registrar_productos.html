@@ -1,0 +1,145 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 100px !important;">
+    
+    <div class="card glass-card p-5 w-100 shadow-lg" style="max-width: 900px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-light">
+            <h3 class="fw-bold text-dark m-0">🛍️ Registrar Nuevo Producto</h3>
+        </div>
+
+        <!-- Alerta de éxito o error -->
+        {% if mensaje %}
+            <div class="alert {% if 'éxito' in mensaje %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                {{ mensaje }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        
+        <form class="py-2" method="POST" autocomplete="off">
+            {% csrf_token %}
+            
+            <!-- Fila 1: Código y Nombre del Producto -->
+            <div class="row g-4 mb-4">
+                <!-- Código -->
+                <div class="col-md-6">
+                    <label for="txtCodigo" class="form-label text-dark fw-bold small">Código de Barras / Producto</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📦</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtCodigo" name="codigo" 
+                            maxlength="45" placeholder="Ej: 770123456789" required>
+                    </div>
+                </div>
+
+                <!-- Nombre -->
+                <div class="col-md-6">
+                    <label for="txtNombre" class="form-label text-dark fw-bold small">Nombre del Producto</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">🏷️</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNombre" name="nombre" 
+                            maxlength="100" placeholder="Ej: Arroz Diana 1000g" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 2: Costo, Precio e IVA -->
+            <div class="row g-4 mb-4">
+                <!-- Costo -->
+                <div class="col-md-4">
+                    <label for="txtCosto" class="form-label text-dark fw-bold small">Costo ($)</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">💰</span>
+                        <input type="number" step="0.01" class="form-control form-control-lg fs-6 py-2" id="txtCosto" name="costo" 
+                            placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <!-- Precio -->
+                <div class="col-md-4">
+                    <label for="txtPrecio" class="form-label text-dark fw-bold small">Precio de Venta ($)</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">💲</span>
+                        <input type="number" step="0.01" class="form-control form-control-lg fs-6 py-2" id="txtPrecio" name="precio" 
+                            placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <!-- IVA -->
+                <div class="col-md-4">
+                    <label for="txtIva" class="form-label text-dark fw-bold small">IVA (%)</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📊</span>
+                        <input type="number" step="0.01" class="form-control form-control-lg fs-6 py-2" id="txtIva" name="iva" 
+                            placeholder="Ej: 19.00">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 3: Stock, Stock Mínimo y Categoría -->
+            <div class="row g-4 mb-4">
+                <!-- Stock -->
+                <div class="col-md-4">
+                    <label for="txtStock" class="form-label text-dark fw-bold small">Stock Actual</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📈</span>
+                        <input type="number" class="form-control form-control-lg fs-6 py-2" id="txtStock" name="stock" 
+                            placeholder="Ej: 50" required>
+                    </div>
+                </div>
+
+                <!-- Min Stock -->
+                <div class="col-md-4">
+                    <label for="txtMinStock" class="form-label text-dark fw-bold small">Stock Mínimo (Alerta)</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📉</span>
+                        <input type="number" class="form-control form-control-lg fs-6 py-2" id="txtMinStock" name="minstock" 
+                            placeholder="Ej: 5" required>
+                    </div>
+                </div>
+
+                <!-- Categoría (Dropdown dinámico) -->
+                <div class="col-md-4">
+                    <label for="cboCategoria" class="form-label text-dark fw-bold small">Categoría</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📂</span>
+                        <select class="form-select form-select-lg fs-6 py-2" id="cboCategoria" name="idCategorias" required>
+                            <option value="" selected disabled>Seleccione...</option>
+                            <!-- Recorre las categorías enviadas desde el views.py -->
+                            {% for cat in categorias %}
+                                <option value="{{ cat.id }}">{{ cat.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila 4: Imagen -->
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <label for="txtImagen" class="form-label text-dark fw-bold small">Nombre o Ruta de la Imagen</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">🖼️</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtImagen" name="imagen" 
+                            placeholder="Ej: arroz_diana.png" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    <a href="{% url 'registrar_productos' %}" class="btn btn-secondary px-4 py-2 fs-6 fw-bold shadow-sm rounded-pill">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-custom-success px-5 py-2 fs-6 fw-bold shadow-sm rounded-pill" id="btnGuardar">
+                        🛍️ Guardar Producto 🛍️
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}

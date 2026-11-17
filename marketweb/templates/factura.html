@@ -1,0 +1,52 @@
+{% load static %}
+{% load humanize %}
+{% include 'header_publico.html' %}
+
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 120px !important; padding-bottom: 20px !important;">
+    <div class="container p-4 w-100 shadow-lg glass-card" style="max-width: 800px; border-radius: 20px;">
+
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-dark mb-1">✅ Pedido Confirmado</h3>
+            <p class="text-muted">Factura N° {{ pedido.numero }} — {{ pedido.fecha|date:"d/m/Y H:i" }}</p>
+        </div>
+
+        <div class="mb-4">
+            <p class="mb-1"><strong>Cliente:</strong> {{ pedido.nombre_cliente }}</p>
+            <p class="mb-1"><strong>Teléfono:</strong> {{ pedido.telefono }}</p>
+            <p class="mb-0"><strong>Dirección:</strong> {{ pedido.direccion }}</p>
+        </div>
+
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cant.</th>
+                    <th class="text-end">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in pedido.detalles.all %}
+                <tr>
+                    <td>{{ detalle.nombre_producto }}</td>
+                    <td>$ {{ detalle.precio_unitario|floatformat:0|intcomma }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                    <td class="text-end">$ {{ detalle.subtotal|floatformat:0|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-end mb-4">
+            <h5 class="fw-bold">Total: $ {{ pedido.total|floatformat:0|intcomma }}</h5>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'catalogo' %}" class="btn btn-outline-dark rounded-pill px-4">Volver al catálogo</a>
+            <button onclick="window.print()" class="btn btn-dark rounded-pill px-4">🖨️ Imprimir factura</button>
+        </div>
+
+    </div>
+</div>
+
+{% include 'inc/footer.html' %}

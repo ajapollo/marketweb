@@ -1,0 +1,137 @@
+{% load static %}
+{% include 'inc/header.html' %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="hero-bg" style="display: flex !important; justify-content: center !important; align-items: flex-start !important; padding-top: 100px !important;">
+
+    <div class="card glass-card p-5 w-100 shadow-lg" style="max-width: 800px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-light">
+            <h3 class="fw-bold text-dark m-0">Editar Cliente</h3>
+        </div>
+
+        <!-- Alerta de éxito o error -->
+        {% if mensaje %}
+            <div class="alert {% if 'éxito' in mensaje %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                {{ mensaje }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <form class="py-2" method="POST" autocomplete="off">
+            {% csrf_token %}
+
+            <div class="row g-4 mb-4">
+                <!-- Tipo de Identificación -->
+                <div class="col-md-6">
+                    <label for="cboTip" class="form-label text-dark fw-bold small">Tipo de Identificación / Documento</label>
+                    <select class="form-select form-select-lg fs-6 py-2" id="cboTip" name="tipo" required>
+                        <option value="" disabled>Seleccione...</option>
+                        <option value="CC" {% if cliente.2 == "CC" %}selected{% endif %}>Cédula de Ciudadanía</option>
+                        <option value="TI" {% if cliente.2 == "TI" %}selected{% endif %}>Tarjeta de Identidad</option>
+                        <option value="CE" {% if cliente.2 == "CE" %}selected{% endif %}>Cédula de Extranjería</option>
+                    </select>
+                </div>
+
+                <!-- Número de Identificación -->
+                <div class="col-md-6">
+                    <label for="txtNum" class="form-label text-dark fw-bold small">Número de Identificación</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">💳</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNum" name="txtNum" 
+                            maxlength="10" placeholder="Ej: 123456789" 
+                            value="{{ cliente.1 }}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Nombres -->
+                <div class="col-md-6">
+                    <label for="txtNom" class="form-label text-dark fw-bold small">Nombres</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">👤</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtNom" name="nombres" 
+                            maxlength="50" placeholder="Nombres del cliente" 
+                            value="{{ cliente.3 }}" 
+                            oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')" required>
+                    </div>
+                </div>
+
+                <!-- Apellidos -->
+                <div class="col-md-6">
+                    <label for="txtApe" class="form-label text-dark fw-bold small">Apellidos</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">👤</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtApe" name="apellidos" 
+                            maxlength="50" placeholder="Apellidos del cliente" 
+                            value="{{ cliente.4 }}" 
+                            oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Dirección -->
+                <div class="col-md-6">
+                    <label for="txtDir" class="form-label text-dark fw-bold small">Dirección</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📍</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtDir" name="direccion" 
+                            maxlength="150" placeholder="Dirección física" 
+                            value="{{ cliente.5 }}" required>
+                    </div>
+                </div>
+
+                <!-- Teléfono / Celular -->
+                <div class="col-md-6">
+                    <label for="txtCel" class="form-label text-dark fw-bold small">Teléfono / Celular</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">📞</span>
+                        <input type="text" class="form-control form-control-lg fs-6 py-2" id="txtCel" name="telefono" 
+                            minlength="10" maxlength="10" placeholder="Ej: 3001234567" 
+                            value="{{ cliente.6 }}"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Correo Electrónico -->
+                <div class="col-md-6">
+                    <label for="txtEma" class="form-label text-dark fw-bold small">Correo Electrónico</label>
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text">✉️</span>
+                        <input type="email" class="form-control form-control-lg fs-6 py-2" id="txtEma" name="email" 
+                            maxlength="100" placeholder="correo@dominio.com" 
+                            value="{{ cliente.7 }}" required>
+                    </div>
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-6">
+                    <label for="cboEst" class="form-label text-dark fw-bold small">Estado</label>
+                    <select class="form-select form-select-lg fs-6 py-2" id="cboEst" name="estado">
+                        <option value="1" {% if cliente.8 == 1 or cliente.8 == '1' %}selected{% endif %}>Activo</option>
+                        <option value="0" {% if cliente.8 == 0 or cliente.8 == '0' %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Botones de Acción (Guardar y Cancelar) -->
+            <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    <a href="{% url 'listarclientes' %}" class="btn btn-secondary px-4 py-2 fs-6 fw-bold shadow-sm rounded-pill">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-custom-success px-5 py-2 fs-6 fw-bold shadow-sm rounded-pill" id="btnGuardar">
+                        💾 Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% include 'inc/footer.html' %}
